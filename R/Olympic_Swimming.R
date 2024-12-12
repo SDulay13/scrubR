@@ -1,0 +1,20 @@
+#' Olympic Swimming Results from 1912 to 2020
+#'
+#' This dataset displays Olympic swimming event results from 1912 to 2020. It contains information on the event stroke type, swimmer details, rank, and other related variables.
+#'
+#' @format A tibble with 4,359 rows and 10 variables:
+#' \describe{
+#'   \item{Location}{A character denoting the host city of the Olympics.}
+#'   \item{Year}{An integer indicating the year of the Olympic Games (ranging from 1912 to 2020).}
+#'   \item{Distance (in meters)}{A character denoting the distance of the event in meters (e.g., 100, 200, 400).}
+#'   \item{Relay?}{A character value of Yes or No indicating whether the race was a relay or not.}
+#'   \item{Gender}{A character denoting the gender category of the swim race ("Men", "Women").}
+#'   \item{Team}{A character denoting the swimmer's country (IOC country code, e.g., "USA").}
+#'   \item{Athlete}{A character indicating the full name of the swimmer.}
+#'   \item{Results}{A character denoting the swimmer's recorded time for the event (NA if no time is recorded).}
+#'   \item{Rank}{An integer denoting the medal won ("1", "2", "3", or "4").}
+#' }
+#'
+#' @source {Data compiled from various Olympic historical records, available via the Data Science Donut on Kaggle.} \url{https://www.kaggle.com/datasets/datasciencedonut/olympic-swimming-1912-to-2020?resource=download}
+"Olympic_Swimming"
+

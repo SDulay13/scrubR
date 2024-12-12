@@ -1,0 +1,33 @@
+Package: scrubR
+Title: Package for efficiently cleaning, transforming, and plotting messy data, ensuring datasets are ready for analysis
+Version: 0.0.0.9000
+Authors@R: c(
+    person("Hana", "Last", , "hanarostami@college.harvard.edu", role = "cre"),
+    person("Loretta", "Eng", , "lorettaeng@college.harvard.edu", role = "aut"),
+    person("Sukhraj", "Dulay", , "sukhrajdulay@college.harvard.edu", role = "aut")
+  )
+Description: This package provides functions to clean and analyze mouse trial data and swimming event results, focusing on validation, cleaning, and visualization. There are four functions that can specifically be applied to the mouse data but can be used on other similar data as well. These functions 1) join sheets in an excel file based on a common key and return discrepancies, 2) make a plot of change in a variable(body weight) for different entities(mice) over time and flag those that drop by more than 20%, 3) validate that the values of a column are quantitative, and 4) validate that the values of a column are categorical and only have the inputted values (checking that the Treatment column only has "Plac" and "Tmt" values). It also includes a built-in dataset including data on Olympic swimmers. The fifth function cleans and preprocesses this dataset for analysis.
+License: GPL-3 | file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0), 
+    ggplot2
+VignetteBuilder: knitr
+Depends: 
+    R (>= 2.10)
+LazyData: true
+Imports:
+    readxl,
+    dplyr,
+    plotly,
+    rlang,
+    stringr,
+    tidyr, 
+    DT, 
+    openxlsx, 
+    tibble
+Config/testthat/edition: 3

@@ -1,0 +1,105 @@
+---
+title: "my-vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(dplyr)
+library(ggplot2)
+library(scrubR)
+
+```
+
+## Introduction
+
+This vignette demonstrates the functionality of the `scrubR` package, which provides tools for data cleaning, validation, and visualization for mouse trial data, along with our selected data set, the Olympic swimming event data The package is designed to streamline the process of identifying data quality issues and reporting key insights.
+
+
+### 1. Cleaning Swimming Data
+
+The `clean_swim_data()` function processes Olympic swimming event results, parsing relay distances, converting results to seconds, and handling missing values.
+
+```{r clean-swim-data, eval = FALSE}
+data <- read.csv("/cloud/project/data-raw/Olympic_Swimming_Results_1912to2020.csv")
+
+swimming_data_cleaned <- clean_swim_data(data, rename_columns = TRUE, verbose = TRUE)
+
+head(swimming_data_cleaned)
+
+```
+
+## 2. Joining Mouse Data Sheets
+
+The `join_sheets()` function merges multiple Excel sheets based on a shared key and flags mismatches in the data.
+
+```{r join_sheets}
+# Load and join the mouse data Excel sheets
+file_path <- "/cloud/project/inst/extdata/mousedata.xlsx"
+if (file.exists(file_path)) {
+  joined_data <- join_sheets(file_path, "ID", c("Birth", "Body Weight", "Outcome"))
+  head(joined_data)
+} else {
+  message("File does not exist. Please verify the path.")
+}
+
+```
+
+## 3. Quantitative Check on Mouse Data
+
+The `quantitative_check()` function identifies non-numerical values in a specified column of the mouse dataset.
+
+```{r categorical-check}
+# Check the "Body Weight 3" column for non-numerical values
+if (exists("joined_data")) {
+  quantitative_issues <- quantitative_check(joined_data, "Body Weight 3")
+  quantitative_issues
+}
+```
+
+## 4. Categorical Check on Mouse Data
+
+The 'categorical_check()' function validates that all entries in a categorical column match expected values.
+
+
+```{r join-sheets, eval=FALSE}
+# Check the "Treatment" column for valid values
+if (exists("joined_data")) {
+  categorical_issues <- categorical_check(joined_data, "Treatment", c("Alive", "Dead"))
+  categorical_issues
+}
+
+```
+
+## 5. Visualizing Changes in Mouse Data
+
+The plot_change() function generates an interactive visualization to show changes in body weight or other metrics over time. It also flags significant drops in value.
+
+
+```{r plot-change, eval=FALSE}
+# Visualize changes in body weight for the mouse dataset
+if (exists("joined_data")) {
+  plot <- plot_change(
+    data = joined_data,
+    id_col = "ID",
+    var_cols = c("Body Weight 1", "Body Weight 2", "Body Weight 3"),
+    color = "Treatment",
+    cat = "Treatment"
+  )
+  plot
+}
+```
+
+## Conclusion
+
+The `scrubR` package provides comprehensive tools for data cleaning, validation, and visualization. By supporting both Olympic swimming event and mouse trial datasets, it makes sure data quality and visual aids in providing critical insights. For more detailed examples and use cases, consult our function documentations.

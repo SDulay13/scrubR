@@ -1,0 +1,13 @@
+^data-raw$
+^project\.Rproj$
+^\.Rproj\.user$
+^project\.Rcheck$
+^project.*\.tar\.gz$
+^project.*\.tgz$
+^LICENSE\.md$
+^scrubR\.Rcheck$
+^scrubR.*\.tar\.gz$
+^scrubR.*\.tgz$
+^doc$
+^Meta$
+^README\.Rmd$
