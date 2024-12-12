@@ -1,31 +1,16 @@
-
-## README.Rmd
-
-
 # scrubR: A Data Cleaning and Visualization Package for STAT 108
 
 ## Why Use This Package?
 
-**scrubR** is an R package designed to simplify the data cleaning, validation, and exploratory analysis workflows for clinical trials, sports analysis, and similar datasets. This package enables statisticians, data analysts, and researchers to handle recurring data cuts, identify potential data issues, and generate clear and actionable insights.
+**scrubR** is an R package designed to simplify data cleaning, validation, and analysis for datasets like sports and clinical trials. It’s aimed at students, researchers, or anyone who needs easy-to-use tools for tidying data, running checks, and generating basic plots.
 
-Key Features:
-- **Data Cleaning:** Standardizes columns, handles missing data, and parses complex field entries like relay distances or times.
-- **Data Validation:** Identifies inconsistencies in categorical and numerical columns, flagging potential data errors for correction.
-- **Visualization:** Generates interactive and static plots to track trends, anomalies, and significant changes in variables over time.
-- **Reproducible Workflows:** Tailored for projects requiring regular updates and interim analyses, such as clinical trials or sports datasets.
+### Features:
+- **Data Cleaning:** Fix columns, handle missing data, and parse entries like relay distances or times.
+- **Data Validation:** Check for unexpected values or inconsistencies in numeric and categorical data.
+- **Visualization:** Create plots to explore trends or identify issues.
+- **Easy Workflows:** Especially useful for projects with frequent data updates.
 
-Whether you're tracking weight loss in mice during vaccine trials or analyzing Olympic swimming event data, **scrubR** ensures a smooth and efficient analysis pipeline.
-
-## Background and Context
-
-This package was developed for **STAT 108, Fall 2024** as part of a group project. Inspired by a clinical trial monitoring mice's immune responses and body weight, **scrubR** is equally applicable to diverse datasets. Its development drew from real-world requirements, such as:
-- Longitudinal tracking of subjects.
-- Handling multiple data updates ("data cuts").
-- Providing interim summaries for collaborative meetings.
-
-Relevant Resources:
-- [R for Data Science](https://r4ds.had.co.nz/) by Hadley Wickham.
-- Example datasets: [Olympic Swimming Data](https://www.kaggle.com/datasets/datasciencedonut/olympic-swimming-1912-to-2020) and clinical trial mouse data.
+If you’re analyzing Olympic swimming results or tracking mouse weights in trials, **scrubR** provides a straightforward way to prepare your data for analysis.
 
 ---
 
@@ -34,78 +19,62 @@ Relevant Resources:
 Install **scrubR** directly from GitHub:
 
 ```{r}
-# install remotes package if you do not already have installed
+# install remotes package if don’t have it
 install.packages("remotes")
 
-# install DataWrangleR pkg
-remotes::install_github("yourusername/scrubR")
+# install scrubR package
+remotes::install_github("SDulay13/scrubR")
 ```
 
 ---
 
-## How to Use the Package
+## How to Use This Package
 
-### Example 1: Cleaning Data
+### Example 1: Cleaning Swimming Data
 
-The `clean_swim_data()` function cleans Olympic swimming event results by:
-1. Parsing relay distances (e.g., `4x100` becomes `400` meters).
-2. Standardizing columns and converting times to seconds.
-3. Identifying problematic rows.
+The `clean_swim_data()` function processes Olympic swimming event results. It:
+- Parses relay distances (e.g., `4x100` → `400` meters).
+- Converts performance times to seconds.
+- Identifies and flags problematic rows.
 
 #### Code Example:
 
 ```{r}
-library(DataWrangleR)
+library(scrubR)
 
-# Load example swimming data
-data <- read.csv("/Cloud/project/data-raw/Olympic_Swimming_Results_1912to2020.csv")
+# load swimming data
+data <- read.csv("data-raw/Olympic_Swimming_Results_1912to2020.csv")
 
-# Clean the data
+# clean the data
 swim_data_cleaned <- clean_swim_data(data, rename_columns = TRUE, verbose = TRUE)
 
-# View cleaned data
 head(swim_data_cleaned)
-```
-
-
-### Example 2: Validating Data
-
-#### 2.1 Categorical Validation
-Use `categorical_check()` to ensure values in a column conform to expected categories.
-
-```{r}
-
-# Check gender column for unexpected entries
-gender_issues <- categorical_check(swim_data_cleaned, "gender", c("Men", "Women"))
-gender_issues
-
-```
-
-#### 2.2 Quantitative Validation
-Use `quantitative_check()` to detect non-numeric values in numerical columns.
-
-```{r }
-
-# Check for non-numeric values in results_seconds column
-quantitative_issues <- quantitative_check(swim_data_cleaned, "results_seconds")
-quantitative_issues
-
 ```
 
 ---
 
-### Example 3: Monitoring Weight Changes
+### Example 2: Monitoring Weight Changes
 
-The `plot_change()` function tracks weight changes over time, flagging significant (>20%) drops in body weight for removal during trials.
+The `plot_change()` function visualizes changes in data over time, flagging significant drops (e.g., weight loss >20%) in trials.
+
+#### Code Example:
 
 ```{r}
-# Example usage for monitoring weight changes in mice
+# load mouse data
+file_path <- "inst/extdata/mousedata.xlsx"
+if (file.exists(file_path)) {
+  mouse_data <- join_sheets(file_path, "ID", c("Birth", "Body Weight", "Outcome"))
+} else {
+  stop("file does not exist. check the path.")
+}
+
+# plot weight changes
 plot <- plot_change(
   data = mouse_data,
-  id_col = "MouseID",
-  var_cols = c("Weight_Day1", "Weight_Day15", "Weight_Day30"),
-  color = "TreatmentGroup",
-  cat = "TreatmentGroup"
+  id_col = "ID",
+  var_cols = c("Body Weight 1", "Body Weight 2", "Body Weight 3"),
+  color = "Treatment",
+  cat = "Treatment"
 )
 plot
 ```
@@ -114,26 +83,29 @@ plot
 
 ## Package Structure
 
-**DataWrangleR** contains the following main functions:
-1. **`clean_swim_data()`** - Cleans and standardizes swimming event datasets.
-2. **`categorical_check()`** - Validates categorical columns against expected values.
-3. **`quantitative_check()`** - Flags non-numerical entries in numerical columns.
-4. **`plot_change()`** - Creates interactive plots for monitoring longitudinal changes.
-5. **`join_sheets()`** - Merges multiple Excel sheets, identifying mismatched keys.
+### Main Functions:
 
-For detailed usage, consult the [vignette](https://yourusername.github.io/DataWrangleR/vignettes/analyzing-olympic-swimming.html).
+1. **`clean_swim_data()`**: Cleans and processes swimming event datasets.
+2. **`categorical_check()`**: Validates categorical column entries.
+3. **`quantitative_check()`**: Detects non-numeric or invalid numeric values.
+4. **`plot_change()`**: Visualizes longitudinal trends and flags outliers.
+5. **`join_sheets()`**: Combines multiple Excel sheets and finds mismatches.
+
+### Example Datasets:
+- [Olympic Swimming Data](https://www.kaggle.com/datasets/datasciencedonut/olympic-swimming-1912-to-2020)
+- Clinical trial data for mice (e.g., tracking weight changes).
+
+For more detailed examples, refer to the Vignette.
 
 ---
 
 ## Contributions
 
-**Developers**: [Hana Rostami], [Loretta Eng, Sukhraj Dulay]
+**Developers**: Hana Rostami, Loretta Eng, Sukhraj Dulay
 
-We welcome feedback and contributions! Submit issues or pull requests via our [GitHub repository](https://github.com/yourusername/DataWrangleR).
+We welcome feedback and contributions! Submit issues or pull requests via our [GitHub repository](https://github.com/SDulay13/scrubR).
 
 ---
-
-
 
 ```{r}
 devtools::build_readme()

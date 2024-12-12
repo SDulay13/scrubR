@@ -2,3 +2,6 @@
 inst/doc
 /doc/
 /Meta/
+scrubR.Rcheck/
+scrubR*.tar.gz
+scrubR*.tgz
